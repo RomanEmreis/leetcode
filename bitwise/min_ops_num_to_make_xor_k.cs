@@ -16,11 +16,10 @@ public class Solution {
         if (xor == k) return 0;
 
         int count = 0;
-        while (xor > 0 || k > 0) {
-            if (k % 2 != xor % 2) ++count;
-
-            k >>= 1;
-            xor >>= 1;
+        int diff = xor ^ k;
+        while (diff > 0) {
+            if ((diff & 1) > 0) ++count;
+            diff >>= 1;
         }
 
         return count;
