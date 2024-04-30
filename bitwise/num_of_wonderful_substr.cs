@@ -14,22 +14,22 @@
 */
 public class Solution {
     public long WonderfulSubstrings(string word) {
-	    long result = 0;
-	    int mask = 0;
+	long result = 0;
+        int mask = 0;
 
         Span<long> count = stackalloc long[1024];
-	    count[0] = 1;
+	count[0] = 1;
 
-	    for (int i = 0; i < word.Length; ++i) {
-	    	mask ^= 1 << (word[i] - 'a');
-	    	result += count[mask];
+	for (int i = 0; i < word.Length; ++i) {
+	     mask ^= 1 << (word[i] - 'a');
+	     result += count[mask];
 
-	    	for (int j = 0; j < 10; ++j)
-	    		result += count[mask ^ (1 << j)];
+	     for (int j = 0; j < 10; ++j)
+	         result += count[mask ^ (1 << j)];
+		
+	     ++count[mask];
+	}
 
-	    	++count[mask];
-	    }
-
-	    return result;
+        return result;
     }
 }
