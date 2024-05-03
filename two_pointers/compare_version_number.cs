@@ -17,26 +17,25 @@
 */
 public class Solution {
     public int CompareVersion(string version1, string version2) {
-        const char dot = '.', zero = '0';
-        int i = 0, j = 0;
-        while (i < version1.Length || j < version2.Length) {
-            int num1 = 0, num2 = 0;
-            while (i < version1.Length && version1[i] != dot) {
-                num1 = num1 * 10 + (version1[i] - zero);
-                ++i;
-            }
-            while (j < version2.Length && version2[j] != dot) {
-                num2 = num2 * 10 + (version2[j] - zero);
-                ++j;
-            }
+        string[] revs1 = version1.Split('.');
+        string[] revs2 = version2.Split('.');
 
-            if (num1 < num2) return -1;
-            else if (num1 > num2) return 1;
+        int result = 0;
 
-            ++i;
-            ++j;
+        for (int i = 0; i < Math.Max(revs1.Length, revs2.Length); ++i) {
+            int rev1 = i < revs1.Length
+                ? int.Parse(revs1[i])
+                : 0;
+
+            int rev2 = i < revs2.Length
+                ? int.Parse(revs2[i])
+                : 0;
+
+            result = rev1.CompareTo(rev2);
+
+            if (result != 0) break;
         }
 
-        return 0;
+        return result;
     }
 }
