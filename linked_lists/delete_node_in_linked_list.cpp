@@ -14,6 +14,14 @@
     * We will build the linked list and pass the node to your function.
     * The output will be the entire list after calling your function.
 */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
 class Solution {
 public:
     void deleteNode(ListNode* node) {
