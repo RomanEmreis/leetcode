@@ -14,6 +14,14 @@
     * We will build the linked list and pass the node to your function.
     * The output will be the entire list after calling your function.
 */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int x) { val = x; }
+ * }
+ */
 public class Solution {
     public void DeleteNode(ListNode node) {
         node.val = node.next.val;
