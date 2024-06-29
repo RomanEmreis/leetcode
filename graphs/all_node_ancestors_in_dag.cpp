@@ -20,18 +20,13 @@
 */
 class Solution {
 private:
-    void dfs(const int& node, const vector<vector<int>>& graph, vector<vector<int>>& result, vector<bool>& visited) {
-        visited[node] = true;
-        set<int> s;
-        for (const int& parent : graph[node]) {
-            if (!visited[parent]) dfs(parent, graph, result, visited);
-
-            s.insert(parent);
-            for (const int& p : result[parent]) s.insert(p);
+    void dfs(vector<vector<int>>& graph, vector<vector<int>>& result, int& parent, int& child) {
+        for (auto& ch: graph[child]) {
+            if (result[ch].size() == 0 || result[ch].back() != parent) {
+                result[ch].push_back(parent);
+                dfs(graph, result, parent, ch);
+            }
         }
-
-        vector<int> ancestors(s.begin(), s.end());
-        result[node] = ancestors;
     }
 
 public:
@@ -39,11 +34,10 @@ public:
         vector<vector<int>> result(n);
         vector<vector<int>> graph(n);
 
-        for (vector<int>& edge : edges) graph[edge[1]].push_back(edge[0]);
+        for (vector<int>& edge : edges) graph[edge[0]].push_back(edge[1]);
 
-        vector<bool> visited(n, false);
         for (int i = 0; i < n; ++i) {
-            if (!visited[i]) dfs(i, graph, result, visited);
+            dfs(graph, result, i, i);
         }
 
         return result;
