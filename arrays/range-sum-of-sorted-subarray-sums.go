@@ -20,6 +20,8 @@ func rangeSum(nums []int, n int, left int, right int) int {
         }
     }
 
+    sort.Ints(sums);
+
     var result int64 = 0
     for i := left - 1; i < right; i++ {
         result += int64(sums[i]);
