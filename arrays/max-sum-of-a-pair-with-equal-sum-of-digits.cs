@@ -20,7 +20,7 @@
 */
 public class Solution {
     public int MaximumSum(int[] nums) {
-        Dictionary<int, int> map = [];
+        Span<int> map = stackalloc int[100];
         int result = -1;
         foreach (int n in nums) {
             int sum = 0;
@@ -29,12 +29,9 @@ public class Solution {
                 sum += m % 10;
                 m /= 10;
             }
-            if (map.TryGetValue(sum, out int k)) {
-                result = Math.Max(result, k + n);
-                if (n > k) map[sum] = n;
-            } else {
-                map[sum] = n;
-            }
+            int k = map[sum];
+            if (k > 0) result = Math.Max(result, k + n);
+            if (k < n) map[sum] = n;
         }
         return result;
     }
