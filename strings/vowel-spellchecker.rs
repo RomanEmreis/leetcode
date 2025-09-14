@@ -32,45 +32,38 @@ use std::collections::HashMap;
 
 impl Solution {
     pub fn spellchecker(wordlist: Vec<String>, queries: Vec<String>) -> Vec<String> {
-        let n = queries.len();
-        let mut res = Vec::with_capacity(n);
-        let mut dict = HashMap::with_capacity(n);
+        let mut dict: HashMap<String, &String> = HashMap::with_capacity(wordlist.len() * 3);
         wordlist.iter().for_each(|w| {
-            dict.entry(w.clone()).or_insert(w.clone());
-            dict.entry(lower(w)).or_insert(w.clone());
-            dict.entry(vowel(w)).or_insert(w.clone());
+            dict.entry(w.clone()).or_insert(w);
+            dict.entry(lower(w)).or_insert(w);
+            dict.entry(vowel(w)).or_insert(w);
         });
-        queries.iter().for_each(|q| {
-            if let Some(w) = dict.get(q) {
-                res.push(w.clone());
-            } else if let Some(w) = dict.get(&lower(q)) {
-                res.push(w.clone());
-            } else if let Some(w) = dict.get(&vowel(q)) {
-                res.push(w.clone());
-            } else {
-                res.push("".to_owned());
-            }
-        });
-        res
+        queries
+            .iter()
+            .map(|q| {
+                dict.get(q)
+                    .or_else(|| dict.get(&lower(q)))
+                    .or_else(|| dict.get(&vowel(q)))
+                    .map(|s| (*s).clone())
+                    .unwrap_or_default()
+            })
+            .collect()
     }
 }
 
-const VOWELS: [char; 10] = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
-
-fn lower(word: &String) -> String {
+fn lower(word: &str) -> String {
     let mut res = String::with_capacity(1 + word.len());
     res.push('$');
-    res.extend(word.chars().flat_map(|c| c.to_lowercase()));
+    res.extend(word.chars().map(|c| c.to_ascii_lowercase()));
     res
 }
 
-fn vowel(word: &String) -> String {
+fn vowel(word: &str) -> String {
     let mut res = String::with_capacity(word.len());
     for ch in word.chars() {
-        if VOWELS.contains(&ch) {
-            res.push('*');
-        } else {
-            res.extend(ch.to_lowercase())
+        match ch.to_ascii_lowercase() {
+            'a' | 'e' | 'i' | 'o' | 'u' => res.push('*'),
+            other => res.push(other),
         }
     }
     res
