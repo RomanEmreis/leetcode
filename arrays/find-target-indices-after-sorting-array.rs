@@ -26,17 +26,20 @@
   The index where nums[i] == 5 is 4.
 */
 impl Solution {
-    pub fn target_indices(mut nums: Vec<i32>, target: i32) -> Vec<i32> {
-        nums.sort_unstable();
+    pub fn target_indices(nums: Vec<i32>, target: i32) -> Vec<i32> {
+        let mut less = 0usize;
+        let mut equal = 0usize;
 
-        let mut res = Vec::new();
-        
-        for (i, num) in nums.into_iter().enumerate() {
-            if num == target {
-                res.push(i as i32);
+        for value in nums {
+            if value < target {
+                less += 1;
+            } else if value == target {
+                equal += 1;
             }
         }
 
-        res
+        (less..less + equal)
+            .map(|index| index as i32)
+            .collect()
     }
 }
